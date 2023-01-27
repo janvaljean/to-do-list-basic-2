@@ -1,53 +1,38 @@
-let input = document.querySelector('#todo-input');
-let add = document.querySelector('#todo-button');
-let toplam = document.querySelector('#toplam');
-let tamamlanan = document.querySelector('#tamamlanan');
-let liste = document.querySelector('#todo-ul');
-toplam = 0
-tamamlanan = 0
-//add new elements
-console.log(toplam)
+let liste = [];
 
-add.onclick = () => {
+let total = 0
 
-    liste.innerHTML += `<li class="newLi">
-    <i class="fa-solid ok fa-check"></i>
-    <p class="par">${input.value}</p>
-    <i class="far fa-trash-alt"></i>
-    </li>`;
-    toplam ++
-    console.log(toplam);
-    document.querySelector('#toplam').textContent = toplam;
+let completed = 0
+
+const listeInput = document.querySelector('#todo-input');
+
+const listeUl = document.querySelector('#todo-ul');
+
+const listeButton = document.querySelector('#todo-button');
+
+const toplam = document.querySelector('#toplam');
+
+//! add button click event
+//?tasks
+//line 23 --if input is empty , add button is disabled
+//line 26 - double element is disabled
+
+ 
+
+listeButton.onclick = () => {
+    if (!listeInput.value) {
+        alert("please add a task");
+
+    }else if (liste.includes(listeInput.value)){
+        return
+    }else{
+        liste.push(listeInput.value);
+        total += 1;
+
+        showListe();  
+    } 
 
 
-    document.querySelectorAll('.fa-trash-alt').forEach(listItem => {
-        listItem.addEventListener('click', function () {
-            var li = this.parentNode
-            li.remove()
-            toplam --;
-            toplam.textContent = toplam;
-            
-        }) })  
-    
-    let par =  document.querySelector(".par")   
-    document.querySelectorAll('.fa-check').forEach(listItem => {
-         listItem.addEventListener('click', function () {
-            par = this.parentNode
-            par.style.textDecoration = "line-through";
-            if (par.style.textDecoration = "line-through"){
-                tamamlanan ++
-            }
-            
-        document.querySelector('#tamamlanan').textContent = tamamlanan;
-
-      })
-      listItem.addEventListener('dblclick', function () {
-            par = this.parentNode
-            par.style.textDecoration = "none";
-      
-
-    })
- })
 
 
 
@@ -56,48 +41,84 @@ add.onclick = () => {
 
 
 
+//! this function shows the list that was created
+//input clearing
+// total changes
+const showListe = () => {
+        listeUl.innerHTML += `<li class="list-item">
+        <i class="fa fa-check fa-lg"></i>
+        <p>${listeInput.value}</p>
+        <i class="fa fa-trash-alt"></i>
+        </li>`;
+        listeInput.value = "";
+        // total changes
+        toplam.textContent = total;
 
-    
+
+    //! check logo entered
+    createCheckButton();
+    //! trash logo entered
+    createSilButton();
 
 
 
+}
+
+const createCheckButton = () => {
+//! when check button is clicked
+    document.querySelectorAll('.fa-check').forEach(a => {
+        a.onclick = () => {
+            // a.parentElement.classlist.toggle("checked") one click  come one click go with toggle
+            //! if parent of a has class "checked" , remove it else add it
+            // we have in css checked class
 
 
 
+            if (a.parentElement.classList.contains("checked")){
+                a.parentElement.classList.remove("checked")
+                completed -= 1;
+
+
+            }else{
+                a.parentElement.classList.add("checked")
+                completed += 1;
+                document.querySelector('#tamamlanan').textContent = completed;
+
+
+            }
+
+}
+
+})
+}
 
 
 
+const createSilButton = () => {
+    //! when trash button is clicked
+    //trash logo in list
+        document.querySelectorAll('.fa-trash-alt').forEach((a) => {
+            a.onclick = () => {
 
-// add.onclick = () => 
-
-
-//     for (let i = 0; i < liste.length; i++) 
-        
-//         let paragraf = document.createElement('p');
-//         let newLi = document.createElement('li');
-
-//         newLi[i].innerHTML += '<i class="fa-solid ok[i] fa-check"></i>';
-//         paragraf[i].innerText = input.value;
-//         liste.appendChild(newLi[i]).appendChild(paragraf[i]);
-        
-//         paragraf[i].innerHTML += '<i class="far fa-trash-alt[i]"></i>';
-
-//         document.querySelector(".ok[i]").onclick = () => 
-//             paragraf[i].style.textDecoration= 'line-through';
-//        
-//         document.querySelector(".fa-trash-alt[i]").onclick = () => 
-//             liste.removeChild(newLi[i]);
+            //! delete only screen
+            a.parentElement.remove();
             
-//               
+            //!delete from list
+            liste = liste.filter((e) => e!== a.parentElement.querySelector('p').textContent);
+ // 2.way   liste = liste.filter((e) => e!== a.closest(".list-item").querySelector('p').textContent
+        // a.previousElementSibling.remove(); ----->  a= trash logo , siblings = p and i  
+            //a.previousElementSiblingElement.textContent
+
+            //a.nextElementSibling.remove();
+            total -= 1;
+            toplam.textContent = total;
+
+            if(a.parentElement.classList.contains("checked")){
+
+                completed -= 1;
+                document.querySelector('#tamamlanan').textContent = completed;
+            }
 
     
-// 
+}})}
     
-
-
-
-
-
-
-
-
